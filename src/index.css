@@ -1,0 +1,52 @@
+:root {
+  --satin: #a9c9f2;
+  --satin-deep: #8bb4e8;
+  --leather: #831f3f;
+  --ivory: #f8e8d8;
+  --gold: #d6ad69;
+  --pink: #f3afc5;
+
+  font-family: 'Bodoni Moda', 'Cormorant Garamond', 'Times New Roman', serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--leather);
+  background: var(--satin);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: var(--satin);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}
