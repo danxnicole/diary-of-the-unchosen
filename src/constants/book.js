@@ -39,8 +39,10 @@ export const STAGE_BOUNDS = [
   { id: 8, start: 0.87, end: 1.0 },
 ];
 
+const base = import.meta.env.BASE_URL || '/';
+
 export const FONTS = {
-  regular: '/fonts/BodoniModa-Regular.ttf',
-  italic: '/fonts/BodoniModa-Italic.ttf',
-  semibold: '/fonts/BodoniModa-SemiBold.ttf',
+  regular: `${base}fonts/BodoniModa-Regular.ttf`,
+  italic: `${base}fonts/BodoniModa-Italic.ttf`,
+  semibold: `${base}fonts/BodoniModa-SemiBold.ttf`,
 };
