@@ -472,7 +472,7 @@ function buildTimeline() {
       ly: 1.55,
       lz: 0.05,
       fov: 36,
-      duration: 2,
+      duration: 1.7,
       ease: "power2.inOut",
       onUpdate: applyCamera,
     },
@@ -525,53 +525,53 @@ function buildTimeline() {
     4
   );
 
-  // Continuous chase: blend from archer framing onto arrow path (no hard cut)
+  // Continuous chase from late-draw framing onto the arrow path
+  const handoff = {
+    x: -0.35,
+    y: 1.7,
+    z: 2.55,
+    lx: 1.1,
+    ly: 1.55,
+    lz: 0.05,
+  };
   const chase = { blend: 0 };
-  tl.to(
-    chase,
-    {
-      blend: 1,
-      duration: 1.15,
-      ease: "power2.inOut",
-    },
-    4
-  );
+  tl.add(() => {
+    handoff.x = camRig.x;
+    handoff.y = camRig.y;
+    handoff.z = camRig.z;
+    handoff.lx = camRig.lx;
+    handoff.ly = camRig.ly;
+    handoff.lz = camRig.lz;
+  }, 3.7);
+  tl.to(chase, { blend: 1, duration: 1.5, ease: "power2.inOut" }, 3.7);
   tl.to(
     camRig,
     {
-      duration: 4,
+      duration: 4.3,
       ease: "none",
       onUpdate: function () {
-        const p = this.progress(); // 0 at t=4 → 1 at t=8
+        const p = Math.max(0, (this.progress() * 4.3 - 0.3) / 4); // ~0 at t=4 → 1 at t=8
         const blend = chase.blend;
-        const lag = THREE.MathUtils.lerp(2.2, 2.15, p);
-        const side = THREE.MathUtils.lerp(2.2, 0.4, Math.min(1, p * 1.15));
+        const lag = THREE.MathUtils.lerp(2.35, 2.1, p);
+        const side = THREE.MathUtils.lerp(2.35, 0.45, Math.min(1, p * 1.1));
         const followX = arrow.position.x - lag;
         const followY = arrow.position.y + 0.22 - p * 0.06;
         const followZ = side;
-        const lookX = arrow.position.x + THREE.MathUtils.lerp(2.0, 3.0, p);
+        const lookX = arrow.position.x + THREE.MathUtils.lerp(1.8, 3.0, p);
         const lookY = arrow.position.y + 0.02;
         const lookZ = arrow.position.z;
 
-        // Early frames still inherit archer framing via blend
-        const fromX = -0.35;
-        const fromY = 1.7;
-        const fromZ = 2.55;
-        const fromLx = 1.1;
-        const fromLy = 1.55;
-        const fromLz = 0.05;
-
-        camRig.x = THREE.MathUtils.lerp(fromX, followX, blend);
-        camRig.y = THREE.MathUtils.lerp(fromY, followY, blend);
-        camRig.z = THREE.MathUtils.lerp(fromZ, followZ, blend);
-        camRig.lx = THREE.MathUtils.lerp(fromLx, lookX, blend);
-        camRig.ly = THREE.MathUtils.lerp(fromLy, lookY, blend);
-        camRig.lz = THREE.MathUtils.lerp(fromLz, lookZ, blend);
+        camRig.x = THREE.MathUtils.lerp(handoff.x, followX, blend);
+        camRig.y = THREE.MathUtils.lerp(handoff.y, followY, blend);
+        camRig.z = THREE.MathUtils.lerp(handoff.z, followZ, blend);
+        camRig.lx = THREE.MathUtils.lerp(handoff.lx, lookX, blend);
+        camRig.ly = THREE.MathUtils.lerp(handoff.ly, lookY, blend);
+        camRig.lz = THREE.MathUtils.lerp(handoff.lz, lookZ, blend);
         camRig.fov = THREE.MathUtils.lerp(36, 30, p);
         applyCamera();
       },
     },
-    4
+    3.7
   );
 
   // 8–9s Impact — clearer vibration
