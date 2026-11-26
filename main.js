@@ -247,7 +247,7 @@ placeNocked(0); updateBowString(0);
 const TARGET_X = 6.4;
 const targetRoot = new THREE.Group();
 targetRoot.position.set(TARGET_X, 1.4, 0);
-targetRoot.rotation.y = -0.95;
+targetRoot.rotation.y = 0.9;
 scene.add(targetRoot);
 const standPost = M(new THREE.CylinderGeometry(0.034, 0.045, 1.35, 16), mat(C.stand, { roughness: 0.85 }));
 standPost.position.set(0.1, -0.6, 0); targetRoot.add(standPost);
@@ -310,7 +310,7 @@ function resetScene() {
   torso.rotation.z = 0.06;
   faceGroup.rotation.set(0, 0, 0); faceGroup.position.set(0, 0.1, 0);
   targetRoot.position.set(TARGET_X, 1.4, 0);
-  targetRoot.rotation.y = -0.95;
+  targetRoot.rotation.y = 0.9;
   Object.assign(camRig, baseCam()); applyCamera(); hideReplay();
   IMPACT.copy(impactLocal); targetRoot.localToWorld(IMPACT);
 }
