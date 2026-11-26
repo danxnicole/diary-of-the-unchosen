@@ -298,13 +298,14 @@ applyCamera();
 
 let timeline = null;
 const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const STATE = { arrowFree: false };
+const STATE = { arrowFree: false, draw: 0 };
 
 function hideReplay() { replayBtn.classList.remove("is-visible"); replayBtn.hidden = true; }
 function showReplay() { replayBtn.hidden = false; requestAnimationFrame(() => replayBtn.classList.add("is-visible")); }
 
 function resetScene() {
   STATE.arrowFree = false;
+  STATE.draw = 0;
   updateBowString(0); placeNocked(0);
   drawArm.position.set(0.05, 1.56, -0.02); drawArm.rotation.set(0, 0, 0);
   torso.rotation.z = 0.06;
@@ -321,11 +322,12 @@ function buildTimeline() {
   const start = { x: NOCK_ORIGIN.x - FULL_DRAW, y: NOCK_ORIGIN.y, z: NOCK_ORIGIN.z };
   IMPACT.copy(impactLocal); targetRoot.localToWorld(IMPACT);
 
+  tl.call(() => { STATE.arrowFree = false; STATE.draw = 0; placeNocked(0); });
   tl.to(camRig, { x: 3.05, y: 1.3, z: baseCam().z - 0.5, lx: 3.05, ly: 1.15, duration: 2, ease: "sine.inOut", onUpdate: applyCamera }, 0);
 
   tl.to(drawProxy, {
     v: 1, duration: 2, ease: "power1.inOut",
-    onUpdate: () => { updateBowString(drawProxy.v); if (!STATE.arrowFree) placeNocked(drawProxy.v); },
+    onUpdate: () => { STATE.draw = drawProxy.v; updateBowString(drawProxy.v); if (!STATE.arrowFree) placeNocked(drawProxy.v); },
   }, 2);
   tl.to(camRig, { x: 0.85, y: 1.55, z: 3.0, lx: 0.9, ly: 1.55, lz: 0.02, fov: 33, duration: 1.7, ease: "power2.inOut", onUpdate: applyCamera }, 2);
 
@@ -409,6 +411,7 @@ window.addEventListener("resize", () => {
 let raf = 0;
 function tick() {
   raf = requestAnimationFrame(tick);
+  if (!STATE.arrowFree) placeNocked(STATE.draw);
   if (scene.userData.sky) scene.userData.sky.position.copy(camera.position);
   renderer.render(scene, camera);
 }
