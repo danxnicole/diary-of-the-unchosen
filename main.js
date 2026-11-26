@@ -265,9 +265,10 @@ const nock = mesh(new THREE.SphereGeometry(0.02, 8, 6), std(COLORS.tip));
 nock.position.x = -0.6;
 arrow.add(nock);
 
-// World-space helpers for nocked placement
-// Bow hand world ≈ archer (0) + bowArm (0.1,1.55,0.06) + bow (0.62,0,0.02) ≈ (0.72, 1.55, 0.08)
-const NOCK_ORIGIN = new THREE.Vector3(0.28, 1.55, 0.08);
+// Nock sits on the string; tip points +X toward the target.
+// String rest ≈ bowArm(0.1,1.55,0.06) + bow(0.62,0,0.02) + stringMid(0.04,0,0) ≈ (0.76, 1.55, 0.08)
+// Arrow nock is at local x = -0.6, so undrawn center.x ≈ 0.76 + 0.6 = 1.36
+const NOCK_ORIGIN = new THREE.Vector3(1.36, 1.55, 0.08);
 const FULL_DRAW = 0.48;
 
 function placeNocked(draw) {
@@ -354,10 +355,10 @@ targetRoot.localToWorld(IMPACT);
 function baseCam() {
   const narrow = window.innerWidth / window.innerHeight < 0.85;
   return {
-    x: -3.2,
+    x: -2.6,
     y: 1.75,
     z: narrow ? 6.4 : 5.4,
-    lx: 5.8,
+    lx: 6.2,
     ly: 1.35,
     lz: 0,
     fov: narrow ? 48 : 42,
