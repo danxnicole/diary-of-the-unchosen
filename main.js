@@ -122,18 +122,19 @@ const torsoPts = [
   new THREE.Vector2(0.155, 0.14),
   new THREE.Vector2(0.11, 0.34),
   new THREE.Vector2(0.16, 0.58),
-  new THREE.Vector2(0.14, 0.7),
-  new THREE.Vector2(0.06, 0.76),
-  new THREE.Vector2(0.048, 0.86),
+  new THREE.Vector2(0.145, 0.72),
+  new THREE.Vector2(0.07, 0.8),
+  new THREE.Vector2(0.052, 0.92),
+  new THREE.Vector2(0.05, 0.98),
 ];
 const torso = M(new THREE.LatheGeometry(torsoPts, 32), fig);
 torso.position.set(0.03, 0.98, 0);
 torso.rotation.z = 0.06;
 archer.add(torso);
 
-const head = M(new THREE.SphereGeometry(0.11, 24, 18), fig);
-head.position.set(0.1, 1.96, 0);
-head.scale.set(0.9, 1.12, 0.88);
+const head = M(new THREE.SphereGeometry(0.112, 24, 18), fig);
+head.position.set(0.1, 1.92, 0);
+head.scale.set(0.92, 1.08, 0.9);
 archer.add(head);
 
 function limb(rt, rb, len) { return M(new THREE.CylinderGeometry(rt, rb, len, 12), fig); }
